@@ -6,8 +6,8 @@
     <title>Cambridge Assessment English - A2 Verbs Simulator</title>
     <style>
         :root {
-            --cambridge-blue: #002f6c; /* Azul Oxford oficial */
-            --cambridge-light: #00a1e4; /* Celeste Cambridge */
+            --cambridge-blue: #002f6c; 
+            --cambridge-light: #00a1e4; 
             --success: #1e7e34;
             --danger: #bd2130;
             --dark: #2d3748;
@@ -63,7 +63,7 @@
             cursor: pointer;
             color: var(--cambridge-blue);
             border-radius: 4px;
-            transition: all 0.2s ease;
+            transition: all 0.1s ease;
         }
         .tab-btn:hover {
             background: #f0f4f8;
@@ -112,7 +112,6 @@
             border-radius: 4px;
             font-size: 16px;
             outline: none;
-            transition: border-color 0.2s;
         }
         input[type="text"]:focus {
             border-color: var(--cambridge-blue);
@@ -126,7 +125,6 @@
             font-weight: bold;
             border-radius: 4px;
             cursor: pointer;
-            transition: background 0.2s;
         }
         button.action-btn:hover {
             background: #0087c2;
@@ -151,6 +149,20 @@
             border: 1px solid #f5c6cb;
             display: block;
         }
+        .next-fast-btn {
+            background: var(--dark);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        .next-fast-btn:hover {
+            background: #1a202c;
+        }
         .reset-btn {
             background: none;
             border: none;
@@ -161,7 +173,6 @@
             display: block;
             margin: 25px auto 0;
         }
-        .reset-btn:hover { color: var(--danger); }
     </style>
 </head>
 <body>
@@ -191,7 +202,7 @@
 
         <div class="input-group">
             <input type="text" id="user-input" placeholder="Type your answer here..." autocomplete="off">
-            <button class="action-btn" onclick="checkAnswer()">Submit</button>
+            <button class="action-btn" id="submit-btn" onclick="checkAnswer()">Submit</button>
         </div>
 
         <div id="feedback-box" class="feedback"></div>
@@ -200,122 +211,180 @@
     </div>
 
     <script>
-        // BASE DE DATOS COMPLETA DE TU PDF[span_0](start_span)[span_0](end_span)
         const verbsData = {
             irregulars: [
-                {inf: "arise", past: "arose", part: "arisen", esp: "surgir"},[span_1](start_span)[span_1](end_span)
-                {inf: "awake", past: "awoke", part: "awoken", esp: "despertarse"},[span_2](start_span)[span_2](end_span)
-                {inf: "be", past: "was", part: "been", esp: "ser / estar"},[span_3](start_span)[span_3](end_span)
-                {inf: "bear", past: "bore", part: "born", esp: "soportar"},[span_4](start_span)[span_4](end_span)
-                {inf: "beat", past: "beat", part: "beaten", esp: "golpear"},[span_5](start_span)[span_5](end_span)
-                {inf: "become", past: "became", part: "become", esp: "llegar a ser"},[span_6](start_span)[span_6](end_span)
-                {inf: "begin", past: "began", part: "begun", esp: "empezar"},[span_7](start_span)[span_7](end_span)
-                {inf: "bend", past: "bent", part: "bent", esp: "doblar"},[span_8](start_span)[span_8](end_span)
-                {inf: "bet", past: "bet", part: "bet", esp: "apostar"},[span_9](start_span)[span_9](end_span)
-                {inf: "bind", past: "bound", part: "bound", esp: "atar"},[span_10](start_span)[span_10](end_span)
-                {inf: "bid", past: "bid", part: "bid", esp: "pujar"},[span_11](start_span)[span_11](end_span)
-                {inf: "bite", past: "bit", part: "bitten", esp: "morder"},[span_12](start_span)[span_12](end_span)
-                {inf: "bleed", past: "bled", part: "bled", esp: "sangrar"},[span_13](start_span)[span_13](end_span)
-                {inf: "blow", past: "blew", part: "blown", esp: "soplar"},[span_14](start_span)[span_14](end_span)
-                {inf: "break", past: "broke", part: "broken", esp: "romper"},[span_15](start_span)[span_15](end_span)
-                {inf: "breed", past: "bred", part: "bred", esp: "criar"},[span_16](start_span)[span_16](end_span)
-                {inf: "bring", past: "brought", part: "brought", esp: "traer"},[span_17](start_span)[span_17](end_span)
-                {inf: "broadcast", past: "broadcast", part: "broadcast", esp: "radiar"},[span_18](start_span)[span_18](end_span)
-                {inf: "build", past: "built", part: "built", esp: "edificar"},[span_19](start_span)[span_19](end_span)
-                {inf: "burn", past: "burnt", part: "burnt", esp: "quemar"},[span_20](start_span)[span_20](end_span)
-                {inf: "burst", past: "burst", part: "burst", esp: "reventar"},[span_21](start_span)[span_21](end_span)
-                {inf: "buy", past: "bought", part: "bought", esp: "comprar"},[span_22](start_span)[span_22](end_span)
-                {inf: "cast", past: "cast", part: "cast", esp: "arrojar"},[span_23](start_span)[span_23](end_span)
-                {inf: "catch", past: "caught", part: "caught", esp: "coger"},[span_24](start_span)[span_24](end_span)
-                {inf: "come", past: "came", part: "come", esp: "venir"},[span_25](start_span)[span_25](end_span)
-                {inf: "cost", past: "cost", part: "cost", esp: "costar"},[span_26](start_span)[span_26](end_span)
-                {inf: "cut", past: "cut", part: "cut", esp: "cortar"},[span_27](start_span)[span_27](end_span)
-                {inf: "choose", past: "chose", part: "chosen", esp: "elegir"},[span_28](start_span)[span_28](end_span)
-                {inf: "cling", past: "clung", part: "clung", esp: "agarrarse"},[span_29](start_span)[span_29](end_span)
-                {inf: "creep", past: "crept", part: "crept", esp: "arrastrarse"},[span_30](start_span)[span_30](end_span)
-                {inf: "deal", past: "dealt", part: "dealt", esp: "tratar"},[span_31](start_span)[span_31](end_span)
-                {inf: "dig", past: "dug", part: "dug", esp: "cavar"},[span_32](start_span)[span_32](end_span)
-                {inf: "do", past: "did", part: "done", esp: "hacer"},[span_33](start_span)[span_33](end_span)
-                {inf: "draw", past: "drew", part: "drawn", esp: "dibujar"},[span_34](start_span)[span_34](end_span)
-                {inf: "dream", past: "dreamt", part: "dreamt", esp: "soñar"},[span_35](start_span)[span_35](end_span)
-                {inf: "drink", past: "drank", part: "drunk", esp: "beber"},[span_36](start_span)[span_36](end_span)
-                {inf: "drive", past: "drove", part: "driven", esp: "conducir"},[span_37](start_span)[span_37](end_span)
-                {inf: "eat", past: "ate", part: "eaten", esp: "comer"},[span_38](start_span)[span_38](end_span)
-                {inf: "fall", past: "fell", part: "fallen", esp: "caer"},[span_39](start_span)[span_39](end_span)
-                {inf: "feed", past: "fed", part: "fed", esp: "alimentar"},[span_40](start_span)[span_40](end_span)
-                {inf: "feel", past: "felt", part: "felt", esp: "sentir"},[span_41](start_span)[span_41](end_span)
-                {inf: "fight", past: "fought", part: "fought", esp: "luchar"},[span_42](start_span)[span_42](end_span)
-                {inf: "find", past: "found", part: "found", esp: "encontrar"},[span_43](start_span)[span_43](end_span)
-                {inf: "flee", past: "fled", part: "fled", esp: "huir"},[span_44](start_span)[span_44](end_span)
-                {inf: "fly", past: "flew", part: "flown", esp: "volar"},[span_45](start_span)[span_45](end_span)
-                {inf: "forbid", past: "forbade", part: "forbidden", esp: "prohibir"},[span_46](start_span)[span_46](end_span)
-                {inf: "forget", past: "forgot", part: "forgotten", esp: "olvidar"},[span_47](start_span)[span_47](end_span)
-                {inf: "forgive", past: "forgave", part: "forgiven", esp: "perdonar"},[span_48](start_span)[span_48](end_span)
-                {inf: "freeze", past: "froze", part: "frozen", esp: "helar"},[span_49](start_span)[span_49](end_span)
-                {inf: "get", past: "got", part: "got", esp: "obtener"},[span_50](start_span)[span_50](end_span)
-                {inf: "give", past: "gave", part: "given", esp: "dar"},[span_51](start_span)[span_51](end_span)
-                {inf: "go", past: "went", part: "gone", esp: "ir"},[span_52](start_span)[span_52](end_span)
-                {inf: "grow", past: "grew", part: "grown", esp: "crecer"},[span_53](start_span)[span_53](end_span)
-                {inf: "grind", past: "ground", part: "ground", esp: "moler"},[span_54](start_span)[span_54](end_span)
-                {inf: "hang", past: "hung", part: "hung", esp: "colgar"},[span_55](start_span)[span_55](end_span)
-                {inf: "have", past: "had", part: "had", esp: "tener"},[span_56](start_span)[span_56](end_span)
-                {inf: "hear", past: "heard", part: "heard", esp: "oir"},[span_57](start_span)[span_57](end_span)
-                {inf: "hide", past: "hid", part: "hidden", esp: "ocultar"},[span_58](start_span)[span_58](end_span)
-                {inf: "hit", past: "hit", part: "hit", esp: "golpear"},[span_59](start_span)[span_59](end_span)
-                {inf: "hold", past: "held", part: "held", esp: "agarrar"},[span_60](start_span)[span_60](end_span)
-                {inf: "hurt", past: "hurt", part: "hurt", esp: "herir"},[span_61](start_span)[span_61](end_span)
-                {inf: "keep", past: "kept", part: "kept", esp: "conservar"},[span_62](start_span)[span_62](end_span)
-                {inf: "know", past: "knew", part: "known", esp: "saber / conocer"},[span_63](start_span)[span_63](end_span)
-                {inf: "kneel", past: "knelt", part: "knelt", esp: "arrodillarse"},[span_64](start_span)[span_64](end_span)
-                {inf: "knit", past: "knit", part: "knit", esp: "hacer punto"},[span_65](start_span)[span_65](end_span)
-                {inf: "lay", past: "laid", part: "laid", esp: "poner"},[span_66](start_span)[span_66](end_span)
-                {inf: "lead", past: "led", part: "led", esp: "conducir"},[span_67](start_span)[span_67](end_span)
-                {inf: "lean", past: "leant", part: "leant", esp: "apoyarse"},[span_68](start_span)[span_68](end_span)
-                {inf: "leap", past: "leapt", part: "leapt", esp: "brincar"},[span_69](start_span)[span_69](end_span)
-                {inf: "learn", past: "learnt", part: "learnt", esp: "aprender"},[span_70](start_span)[span_70](end_span)
-                {inf: "leave", past: "left", part: "left", esp: "dejar"},[span_71](start_span)[span_71](end_span)
-                {inf: "lend", past: "lent", part: "lent", esp: "prestar"},[span_72](start_span)[span_72](end_span)
-                {inf: "let", past: "let", part: "let", esp: "permitir"},[span_73](start_span)[span_73](end_span)
-                {inf: "lie", past: "lay", part: "lain", esp: "echarse"},[span_74](start_span)[span_74](end_span)
-                {inf: "light", past: "lit", part: "lit", esp: "encender"},[span_75](start_span)[span_75](end_span)
-                {inf: "lose", past: "lost", part: "lost", esp: "perder"},[span_76](start_span)[span_76](end_span)
-                {inf: "make", past: "made", part: "made", esp: "hacer"},[span_77](start_span)[span_77](end_span)
-                {inf: "mean", past: "meant", part: "meant", esp: "significar"},[span_78](start_span)[span_78](end_span)
-                {inf: "meet", past: "met", part: "met", esp: "encontrar"},[span_79](start_span)[span_79](end_span)
-                {inf: "mistake", past: "mistook", part: "mistaken", esp: "equivocar"},[span_80](start_span)[span_80](end_span)
-                {inf: "overcome", past: "overcame", part: "overcome", esp: "vencer"},[span_81](start_span)[span_81](end_span)
-                {inf: "pay", past: "paid", part: "paid", esp: "pagar"},[span_82](start_span)[span_82](end_span)
-                {inf: "put", past: "put", part: "put", esp: "poner"},[span_83](start_span)[span_83](end_span)
-                {inf: "read", past: "read", part: "read", esp: "leer"},[span_84](start_span)[span_84](end_span)
-                {inf: "ride", past: "rode", part: "ridden", esp: "montar"},[span_85](start_span)[span_85](end_span)
-                {inf: "ring", past: "rang", part: "rung", esp: "llamar"},[span_86](start_span)[span_86](end_span)
-                {inf: "rise", past: "rose", part: "risen", esp: "levantarse"},[span_87](start_span)[span_87](end_span)
-                {inf: "run", past: "ran", part: "run", esp: "correr"},[span_88](start_span)[span_88](end_span)
-                {inf: "say", past: "said", part: "said", esp: "decir"},[span_89](start_span)[span_89](end_span)
-                {inf: "see", past: "saw", part: "seen", esp: "ver"},[span_90](start_span)[span_90](end_span)
-                {inf: "seek", past: "sought", part: "sought", esp: "buscar"},[span_91](start_span)[span_91](end_span)
-                {inf: "sell", past: "sold", part: "sold", esp: "vender"},[span_92](start_span)[span_92](end_span)
-                {inf: "send", past: "sent", part: "sent", esp: "enviar"},[span_93](start_span)[span_93](end_span)
-                {inf: "set", past: "set", part: "set", esp: "poner"},[span_94](start_span)[span_94](end_span)
-                {inf: "sew", past: "sewed", part: "sewn", esp: "coser"},[span_95](start_span)[span_95](end_span)
-                {inf: "shake", past: "shook", part: "shaken", esp: "sacudir"},[span_96](start_span)[span_96](end_span)
-                {inf: "shear", past: "shore", part: "shorn", esp: "esquilar"},[span_97](start_span)[span_97](end_span)
-                {inf: "shine", past: "shone", part: "shone", esp: "brillar"},[span_98](start_span)[span_98](end_span)
-                {inf: "shoot", past: "shot", part: "shot", esp: "disparar"},[span_99](start_span)[span_99](end_span)
-                {inf: "show", past: "showed", part: "shown", esp: "mostrar"},[span_100](start_span)[span_100](end_span)
-                {inf: "shrink", past: "shrank", part: "shrunk", esp: "encogerse"},[span_101](start_span)[span_101](end_span)
-                {inf: "shut", past: "shut", part: "shut", esp: "cerrar"},[span_102](start_span)[span_102](end_span)
-                {inf: "sing", past: "sang", part: "sung", esp: "cantar"},[span_103](start_span)[span_103](end_span)
-                {inf: "sink", past: "sank", part: "sunk", esp: "hundir"},[span_104](start_span)[span_104](end_span)
-                {inf: "sit", past: "sat", part: "sat", esp: "sentarse"},[span_105](start_span)[span_105](end_span)
-                {inf: "sleep", past: "slept", part: "slept", esp: "dormir"},[span_106](start_span)[span_106](end_span)
-                {inf: "slide", past: "slid", part: "slid", esp: "resbalar"},[span_107](start_span)[span_107](end_span)
-                {inf: "smell", past: "smelt", part: "smelt", esp: "oler"},[span_108](start_span)[span_108](end_span)
-                {inf: "sow", past: "sowed", part: "sown", esp: "sembrar"},[span_109](start_span)[span_109](end_span)
-                {inf: "speak", past: "spoke", part: "spoken", esp: "hablar"},[span_110](start_span)[span_110](end_span)
-                {inf: "speed", past: "sped", part: "sped", esp: "acelerar"},[span_111](start_span)[span_111](end_span)
-                {inf: "spell", past: "spelt", part: "spelt", esp: "deletrear"},[span_112](start_span)[span_112](end_span)
-                {inf: "spend", past: "spent", part: "spent", esp: "gastar"},[span_113](start_span)[span_113](end_span)
-                {inf: "spill", past: "spilt", part: "spilt", esp: "derramar"},[span_114](start_span)[span_114](end_span)
-                {inf: "spin", past: "spun", part: "spun", esp: "hilar"},[span_115](start_span)[span_115](end_span)
-                {inf: "spit", past: "spat", part: "spat", esp: "es
+                {inf: "arise", past: "arose", part: "arisen", esp: "surgir"},
+                {inf: "awake", past: "awoke", part: "awoken", esp: "despertarse"},
+                {inf: "be", past: "was", part: "been", esp: "ser / estar"},
+                {inf: "bear", past: "bore", part: "born", esp: "soportar"},
+                {inf: "beat", past: "beat", part: "beaten", esp: "golpear"},
+                {inf: "become", past: "became", part: "become", esp: "llegar a ser"},
+                {inf: "begin", past: "began", part: "begun", esp: "empezar"},
+                {inf: "bend", past: "bent", part: "bent", esp: "doblar"},
+                {inf: "bet", past: "bet", part: "bet", esp: "apostar"},
+                {inf: "bind", past: "bound", part: "bound", esp: "atar"},
+                {inf: "bid", past: "bid", part: "bid", esp: "pujar"},
+                {inf: "bite", past: "bit", part: "bitten", esp: "morder"},
+                {inf: "bleed", past: "bled", part: "bled", esp: "sangrar"},
+                {inf: "blow", past: "blew", part: "blown", esp: "soplar"},
+                {inf: "break", past: "broke", part: "broken", esp: "romper"},
+                {inf: "breed", past: "bred", part: "bred", esp: "criar"},
+                {inf: "bring", past: "brought", part: "brought", esp: "traer"},
+                {inf: "broadcast", past: "broadcast", part: "broadcast", esp: "radiar"},
+                {inf: "build", past: "built", part: "built", esp: "edificar"},
+                {inf: "burn", past: "burnt", part: "burnt", esp: "quemar"},
+                {inf: "burst", past: "burst", part: "burst", esp: "reventar"},
+                {inf: "buy", past: "bought", part: "bought", esp: "comprar"},
+                {inf: "cast", past: "cast", part: "cast", esp: "arrojar"},
+                {inf: "catch", past: "caught", part: "caught", esp: "coger"},
+                {inf: "come", past: "came", part: "come", esp: "venir"},
+                {inf: "cost", past: "cost", part: "cost", esp: "costar"},
+                {inf: "cut", past: "cut", part: "cut", esp: "cortar"},
+                {inf: "choose", past: "chose", part: "chosen", esp: "elegir"},
+                {inf: "cling", past: "clung", part: "clung", esp: "agarrarse"},
+                {inf: "creep", past: "crept", part: "crept", esp: "arrastrarse"},
+                {inf: "deal", past: "dealt", part: "dealt", esp: "tratar"},
+                {inf: "dig", past: "dug", part: "dug", esp: "cavar"},
+                {inf: "do", past: "did", part: "done", esp: "hacer"},
+                {inf: "draw", past: "drew", part: "drawn", esp: "dibujar"},
+                {inf: "dream", past: "dreamt", part: "dreamt", esp: "soñar"},
+                {inf: "drink", past: "drank", part: "drunk", esp: "beber"},
+                {inf: "drive", past: "drove", part: "driven", esp: "conducir"},
+                {inf: "eat", past: "ate", part: "eaten", esp: "comer"},
+                {inf: "fall", past: "fell", part: "fallen", esp: "caer"},
+                {inf: "feed", past: "fed", part: "fed", esp: "alimentar"},
+                {inf: "feel", past: "felt", part: "felt", esp: "sentir"},
+                {inf: "fight", past: "fought", part: "fought", esp: "luchar"},
+                {inf: "find", past: "found", part: "found", esp: "encontrar"},
+                {inf: "flee", past: "fled", part: "fled", esp: "huir"},
+                {inf: "fly", past: "flew", part: "flown", esp: "volar"},
+                {inf: "forbid", past: "forbade", part: "forbidden", esp: "prohibir"},
+                {inf: "forget", past: "forgot", part: "forgotten", esp: "olvidar"},
+                {inf: "forgive", past: "forgave", part: "forgiven", esp: "perdonar"},
+                {inf: "freeze", past: "froze", part: "frozen", esp: "helar"},
+                {inf: "get", past: "got", part: "got", esp: "obtener"},
+                {inf: "give", past: "gave", part: "given", esp: "dar"},
+                {inf: "go", past: "went", part: "gone", esp: "ir"},
+                {inf: "grow", past: "grew", part: "grown", esp: "crecer"},
+                {inf: "grind", past: "ground", part: "ground", esp: "moler"},
+                {inf: "hang", past: "hung", part: "hung", esp: "colgar"},
+                {inf: "have", past: "had", part: "had", esp: "tener"},
+                {inf: "hear", past: "heard", part: "heard", esp: "oir"},
+                {inf: "hide", past: "hid", part: "hidden", esp: "ocultar"},
+                {inf: "hit", past: "hit", part: "hit", esp: "golpear"},
+                {inf: "hold", past: "held", part: "held", esp: "agarrar"},
+                {inf: "hurt", past: "hurt", part: "hurt", esp: "herir"},
+                {inf: "keep", past: "kept", part: "kept", esp: "conservar"},
+                {inf: "know", past: "knew", part: "known", esp: "saber / conocer"},
+                {inf: "kneel", past: "knelt", part: "knelt", esp: "arrodillarse"},
+                {inf: "knit", past: "knit", part: "knit", esp: "hacer punto"},
+                {inf: "lay", past: "laid", part: "laid", esp: "poner"},
+                {inf: "lead", past: "led", part: "led", esp: "conducir"},
+                {inf: "lean", past: "leant", part: "leant", esp: "apoyarse"},
+                {inf: "leap", past: "leapt", part: "leapt", esp: "brincar"},
+                {inf: "learn", past: "learnt", part: "learnt", esp: "aprender"},
+                {inf: "leave", past: "left", part: "left", esp: "dejar"},
+                {inf: "lend", past: "lent", part: "lent", esp: "prestar"},
+                {inf: "let", past: "let", part: "let", esp: "permitir"},
+                {inf: "lie", past: "lay", part: "lain", esp: "echarse"},
+                {inf: "light", past: "lit", part: "lit", esp: "encender"},
+                {inf: "lose", past: "lost", part: "lost", esp: "perder"},
+                {inf: "make", past: "made", part: "made", esp: "hacer"},
+                {inf: "mean", past: "meant", part: "meant", esp: "significar"},
+                {inf: "meet", past: "met", part: "met", esp: "encontrar"},
+                {inf: "mistake", past: "mistook", part: "mistaken", esp: "equivocar"},
+                {inf: "overcome", past: "overcame", part: "overcome", esp: "vencer"},
+                {inf: "pay", past: "paid", part: "paid", esp: "pagar"},
+                {inf: "put", past: "put", part: "put", esp: "poner"},
+                {inf: "read", past: "read", part: "read", esp: "leer"},
+                {inf: "ride", past: "rode", part: "ridden", esp: "montar"},
+                {inf: "ring", past: "rang", part: "rung", esp: "llamar"},
+                {inf: "rise", past: "rose", part: "risen", esp: "levantarse"},
+                {inf: "run", past: "ran", part: "run", esp: "correr"},
+                {inf: "say", past: "said", part: "said", esp: "decir"},
+                {inf: "see", past: "saw", part: "seen", esp: "ver"},
+                {inf: "seek", past: "sought", part: "sought", esp: "buscar"},
+                {inf: "sell", past: "sold", part: "sold", esp: "vender"},
+                {inf: "send", past: "sent", part: "sent", esp: "enviar"},
+                {inf: "set", past: "set", part: "set", esp: "poner"},
+                {inf: "sew", past: "sewed", part: "sewn", esp: "coser"},
+                {inf: "shake", past: "shook", part: "shaken", esp: "sacudir"},
+                {inf: "shear", past: "shore", part: "shorn", esp: "esquilar"},
+                {inf: "shine", past: "shone", part: "shone", esp: "brillar"},
+                {inf: "shoot", past: "shot", part: "shot", esp: "disparar"},
+                {inf: "show", past: "showed", part: "shown", esp: "mostrar"},
+                {inf: "shrink", past: "shrank", part: "shrunk", esp: "encogerse"},
+                {inf: "shut", past: "shut", part: "shut", esp: "cerrar"},
+                {inf: "sing", past: "sang", part: "sung", esp: "cantar"},
+                {inf: "sink", past: "sank", part: "sunk", esp: "hundir"},
+                {inf: "sit", past: "sat", part: "sat", esp: "sentarse"},
+                {inf: "sleep", past: "slept", part: "slept", esp: "dormir"},
+                {inf: "slide", past: "slid", part: "slid", esp: "resbalar"},
+                {inf: "smell", past: "smelt", part: "smelt", esp: "oler"},
+                {inf: "sow", past: "sowed", part: "sown", esp: "sembrar"},
+                {inf: "speak", past: "spoke", part: "spoken", esp: "hablar"},
+                {inf: "speed", past: "sped", part: "sped", esp: "acelerar"},
+                {inf: "spell", past: "spelt", part: "spelt", esp: "deletrear"},
+                {inf: "spend", past: "spent", part: "spent", esp: "gastar"},
+                {inf: "spill", past: "spilt", part: "spilt", esp: "derramar"},
+                {inf: "spin", past: "spun", part: "spun", esp: "hilar"},
+                {inf: "spit", past: "spat", part: "spat", esp: "escupir"},
+                {inf: "split", past: "split", part: "split", esp: "partir"},
+                {inf: "spoil", past: "spoilt", part: "spoilt", esp: "estropear"},
+                {inf: "spread", past: "spread", part: "spread", esp: "extender"},
+                {inf: "spring", past: "sprang", part: "sprung", esp: "saltar"},
+                {inf: "stand", past: "stood", part: "stood", esp: "estar en pie"},
+                {inf: "steal", past: "stole", part: "stolen", esp: "robar"},
+                {inf: "stick", past: "stuck", part: "stuck", esp: "pegar"},
+                {inf: "sting", past: "stung", part: "stung", esp: "picar"},
+                {inf: "stink", past: "stank", part: "stunk", esp: "apestar"},
+                {inf: "stride", past: "strode", part: "stridden", esp: "dar zancadas"},
+                {inf: "strike", past: "struck", part: "struck", esp: "golpear"},
+                {inf: "swear", past: "swore", part: "sworn", esp: "jurar"},
+                {inf: "sweat", past: "sweat", part: "sweat", esp: "sudar"},
+                {inf: "sweep", past: "swept", part: "swept", esp: "barrer"},
+                {inf: "swell", past: "swelled", part: "swollen", esp: "hinchar"},
+                {inf: "swim", past: "swam", part: "swum", esp: "nadar"},
+                {inf: "swing", past: "swung", part: "swung", esp: "columpiarse"},
+                {inf: "take", past: "took", part: "taken", esp: "coger"},
+                {inf: "teach", past: "taught", part: "taught", esp: "enseñar"},
+                {inf: "tear", past: "tore", part: "torn", esp: "rasgar"},
+                {inf: "tell", past: "told", part: "told", esp: "decir"},
+                {inf: "think", past: "thought", part: "thought", esp: "pensar"},
+                {inf: "throw", past: "threw", part: "thrown", esp: "arrojar / tirar"},
+                {inf: "thrust", past: "thrust", part: "thrust", esp: "introducir"},
+                {inf: "tread", past: "trod", part: "trodden", esp: "pisar"},
+                {inf: "understand", past: "understood", part: "understood", esp: "entender"},
+                {inf: "undergo", past: "underwent", part: "undergone", esp: "sufrir"},
+                {inf: "undertake", past: "undertook", part: "undertaken", esp: "emprender"},
+                {inf: "wake", past: "woke", part: "woken", esp: "despertarse"},
+                {inf: "wear", past: "wore", part: "worn", esp: "llevar puesto"},
+                {inf: "weave", past: "wove", part: "woven", esp: "tejer"},
+                {inf: "weep", past: "wept", part: "wept", esp: "llorar"},
+                {inf: "wet", past: "wet", part: "wet", esp: "mojar"},
+                {inf: "win", past: "won", part: "won", esp: "ganar"},
+                {inf: "wind", past: "wound", part: "wound", esp: "enrollar"},
+                {inf: "withdraw", past: "withdrew", part: "withdrawn", esp: "retirarse"},
+                {inf: "wring", past: "wrung", part: "wrung", esp: "torcer"},
+                {inf: "write", past: "wrote", part: "written", esp: "escribir"}
+            ],
+            reg_id: ["accept", "count", "date", "end", "expect", "intend", "need", "plant", "point", "rent", "repeat", "resist", "start", "visit", "wait", "want"],
+            reg_t: ["ask", "cook", "dance", "dress", "erase", "finish", "help", "jump", "like", "look", "miss", "practice", "push", "shop", "smoke", "stop", "talk", "walk", "wash", "wish", "work"],
+            reg_d: ["answer", "arrive", "belong", "change", "clean", "climb", "close", "consider", "dare", "deliver", "enjoy", "fill", "follow", "hurry", "learn", "listen", "live", "love", "name", "open", "order", "planned", "play", "rain", "remember", "show", "stay", "study", "travel", "try", "turn", "used"]
+        };
+
+        const sentencesTemplates = [
+            { text: "Yesterday, I ___ a new book. (read)", ans: "read" },
+            { text: "She has ___ a beautiful picture inspired by Venice. (make)", ans: "made" },
+            { text: "It is raining outside, so I ___ my jacket. (wear)", ans: "wore" },
+            { text: "We ___ to the new museum last week. (go)", ans: "went" },
+            { text: "They have ___ many flowers in the garden. (plant)", ans: "planted" },
+            { text: "He ___ his work on the system very fast. (finish)", ans: "finished" }
+        ];
+
+        let currentMode = 'esp_to_inf';
+        let currentItem = {};
+        let score = parseInt(localStorage.getItem('streak_score')) || 0;
+        let timeoutId = null;
+
+  
